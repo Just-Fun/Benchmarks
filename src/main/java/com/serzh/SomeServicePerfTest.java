@@ -24,39 +24,28 @@ import org.openjdk.jmh.runner.RunnerException;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(value = 1)
 @State(Scope.Thread)
-public class ArrayPublisherPerfTest {
-    //    @Param({ "1000000" })
-    @Param({ "10" })
+public class SomeServicePerfTest {
+    //    @Param({"10"})
+    @Param({"5555555"})
     public int times;
+//    public int times = 5555555;
 
-    //    UnoptimizedArrayPublisher<Integer> unoptimizedArrayPublisher;
-    ArrayPublisher<Integer> arrayPublisher;
+    private SomeService someService;
 
     @Setup
     public void setup() {
 //        org.openjdk.jmh.util.Utils
-        Integer[] array = new Integer[times];
+        System.out.println();
+        System.out.println("!!!!!!!!times: " + times);
+//        int[] array = new int[555_555_5];
+        int[] array = new int[times];
         Arrays.fill(array, 777);
-//        unoptimizedArrayPublisher = new UnoptimizedArrayPublisher<>(array);
-        arrayPublisher = new ArrayPublisher<>(array);
+        someService = new SomeService(array);
     }
 
     @Benchmark
-    public Object publisherPerformance(Blackhole bh) {
-        PerfSubscriber lo = new PerfSubscriber(bh);
-
-        arrayPublisher.subscribe(lo);
-
-        return lo;
-    }
-
-    @Benchmark
-    public Object unoptimizedPublisherPerformance(Blackhole bh) {
-        PerfSubscriber lo = new PerfSubscriber(bh);
-
-//        unoptimizedArrayPublisher.subscribe(lo);
-
-        return lo;
+    public void publisherPerformance() {
+        someService.doSomething();
     }
 
     public static void main(String[] args) throws IOException, RunnerException {
